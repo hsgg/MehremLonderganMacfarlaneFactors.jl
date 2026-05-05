@@ -1,9 +1,10 @@
 using MehremLonderganMacfarlaneFactors
 using Test
+using Jacobi: legendre
 
 @testset "MehremLonderganMacfarlaneFactors.jl" begin
 
-    ENV["JULIA_DEBUG"] = MehremLonderganMacfarlaneFactors
+    #ENV["JULIA_DEBUG"] = MehremLonderganMacfarlaneFactors
 
     # l1 = l2 = l3 = 0
     krange = 0.1:0.1:0.3
@@ -70,6 +71,19 @@ using Test
     @test mehremlonderganmacfarlanefactor(4, 4, 4, 1.0, 1.05, big(0.06)) ≈ -1.511653808097  rtol=1e-12
     @test mehremlonderganmacfarlanefactor(0, 0, 0, 1.0, 1.02, big(0.03)) ≈  25.6666066469758  rtol=1e-12
     @test mehremlonderganmacfarlanefactor(4, 4, 4, 1.0, 1.02, big(0.03)) ≈ -10.9755226591813  rtol=1e-12
+
+
+    # Special case: (ℓ₁, ℓ₂, ℓ₃) = (ℓ, ℓ, 0)
+    krange = 0.1:0.1:0.3
+    for k1 in krange, k2 in krange, k3 in krange, ell=0:1000
+        delta = (k1^2 + k2^2 - k3^2) / (2 * k1 * k2)
+        if MehremLonderganMacfarlaneFactors.beta(delta) == 0
+            simplified = 0.0  # protect the legendre polynomial
+        else
+            simplified = π * MehremLonderganMacfarlaneFactors.beta(delta) / (4 * k1 * k2 * k3) * legendre(delta, ell)
+        end
+        @test mehremlonderganmacfarlanefactor(ell, ell, 0, k1, k2, k3) ≈ simplified
+    end
 
 
     # types

@@ -22,6 +22,12 @@ end
 
 function mehremlonderganmacfarlanefactor3j(l1, l2, l3, k1::T, k2::T, k3::T) where {T<:Real}
     delta = (k1^2 + k2^2 - k3^2) / (2 * k1 * k2)
+    beta_of_delta = beta(delta)
+
+    if beta_of_delta == 0
+        # protect the Legendre polynomial
+        return T(0)
+    end
 
     mlm3j = T(0)
 
@@ -54,7 +60,7 @@ function mehremlonderganmacfarlanefactor3j(l1, l2, l3, k1::T, k2::T, k3::T) wher
         # @show L,mlm3jterm,mlm3j
     end
 
-    mlm3j *= π * beta(delta) / (4 * k1 * k2 * k3)
+    mlm3j *= π * beta_of_delta / (4 * k1 * k2 * k3)
 
     mlm3j *= sqrt(T(2 * l3 + 1)) * (k1 / k3)^l3
 
