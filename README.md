@@ -56,6 +56,12 @@ To install this Julia package, press `]` and run
 pkg> add https://github.com/hsgg/MehremLonderganMacfarlaneFactors.jl
 ```
 
+If you have access to [WATCosmologyJuliaRegistry](https://github.com/Wide-Angle-Team/WATCosmologyJuliaRegistry),
+then you can install it as usual: press `]` and run
+```julia
+pkh> add MehremLonderganMacfarlaneFactors
+```
+
 
 ## Usage
 
